@@ -141,3 +141,13 @@ function Cell(marker) {
     getValue
   };
 }
+
+game = Gameboard();
+game.markCell(0, 0, 'x');
+game.markCell(0, 1, 'o');
+game.markCell(1, 0, 'x');
+game.markCell(2, 1, 'o');
+game.markCell(2, 0, 'o');
+game.displayGameboard();
+game.checkWinner();
+
