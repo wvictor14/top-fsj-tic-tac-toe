@@ -119,7 +119,8 @@ function Gameboard() {
   return {
     getGameboard,
     markCell,
-    displayGameboard
+    displayGameboard,
+    checkWinner
   };
 }
 
