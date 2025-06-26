@@ -151,3 +151,45 @@ game.markCell(2, 0, 'o');
 game.displayGameboard();
 game.checkWinner();
 
+// GameController controls the game
+function GameController() {
+
+  // initialize a game
+  game = Gameboard();
+
+  // play a round
+  // a round consists of each player marking a cell each
+  // then checking if a winner exists
+  // if exists end the game, declare winner
+  // ask to play again
+  // if not exists, then play another round
+
+
+  // we need to instantiate two players
+  function player(name, marker) {
+    return {
+      name,
+      marker
+    }
+  } 
+
+  const player1 = player('User', 'X');
+  const player2 = player('Computer', 'O');
+
+  function playRound(p1, p2) {
+    // player 1 places a marker down
+    game.markCell(0, 1, p1.marker);
+
+    // player 2 places a marker down
+    game.markCell(0, 2, p2.marker);
+
+    // check for winner
+    game.displayGameboard();
+    game.checkWinner();
+
+    // if winner, end game
+  }
+
+
+}
+
