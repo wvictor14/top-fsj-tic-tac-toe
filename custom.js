@@ -43,11 +43,78 @@ function Gameboard() {
     boardWithValues.forEach(element => {console.log(element)});
   };
 
-      }
-      console.log(row);
-    }
-  };
+  // checkWinner, determines if the current board has a winner
+  function checkWinner() {
 
+    // function that pulls out every 3 in a row in a board
+    const winConditions = [
+
+      // coordinates are in format of [row, column]
+      // 3 across columns
+      [[0,0], [1, 0], [2, 0]],
+      [[0,1], [1, 1], [2, 1]],
+      [[0,2], [1, 2], [2, 2]],
+
+      // 3 across rows
+      [[0,0], [0, 1], [0, 2]],
+      [[1,0], [1, 1], [1, 2]],
+      [[2,0], [2, 1], [2, 2]],
+
+      // 3 across diag
+      [[0,0], [1, 1], [2, 2]],
+      [[0,2], [1, 1], [0, 2]]
+    ];
+
+    // iterate across each winning condition coordinates
+    // checking if the board has all one symbol
+    let winConditionsValues = [];
+
+    // iterate across every possible win condition
+    for (const cond of winConditions) {
+      let array = [];
+
+      // get the value of each coordinate of each win condition and put in array
+      for (const coord of cond) {
+
+        array.push(
+          board[coord[0]][coord[1]].getValue()
+        );
+      }
+      winConditionsValues.push(array);
+    } 
+
+    console.log(winConditionsValues);
+
+    // now check if the values in each winCondition are all the same
+    const winners = winConditionsValues.map((cond) => {
+      return cond.every((x, i, a) => x === a[0] && a[0] != '');
+    });
+
+    // get the index of the winner
+    // return the winning index and pattern
+    function allEqual(array) {
+      array.every((x, i, a) => x === a[0] && a[0] != '')
+    }
+    const winnerExists = winConditionsValues.some( (ele) =>
+      allEqual(ele)
+    );
+    const winnerIndex = winConditionsValues.findIndex((ele) => 
+      allEqual(ele)
+    );
+    const winnerPattern = winConditionsValues.filter((ele) => 
+      allEqual(ele)
+    );
+
+    const winnerCoordinates = winConditions[winnerIndex];
+
+    return {
+      exists: winnerExists,
+      coordinates: winnerCoordinates, 
+      pattern: winnerPattern};
+
+
+
+  }
   // interface to interact with the board
   return {
     getGameboard,
