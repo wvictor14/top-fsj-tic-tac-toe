@@ -83,36 +83,25 @@ function Gameboard() {
       winConditionsValues.push(array);
     } 
 
-    console.log(winConditionsValues);
-
     // now check if the values in each winCondition are all the same
-    const winners = winConditionsValues.map((cond) => {
-      return cond.every((x, i, a) => x === a[0] && a[0] != '');
-    });
 
     // get the index of the winner
     // return the winning index and pattern
     function allEqual(array) {
-      array.every((x, i, a) => x === a[0] && a[0] != '')
+      return array.every((x, i, a) => x === a[0] && a[0] != '')
     }
-    const winnerExists = winConditionsValues.some( (ele) =>
-      allEqual(ele)
-    );
-    const winnerIndex = winConditionsValues.findIndex((ele) => 
-      allEqual(ele)
-    );
-    const winnerPattern = winConditionsValues.filter((ele) => 
-      allEqual(ele)
-    );
+    // const winners = winConditionsValues.map((cond) => allEqual(cond));
+    const winnerExists = winConditionsValues.some( (ele) => allEqual(ele));
+    const winnerIndex = winConditionsValues.findIndex((ele) => allEqual(ele));
+    const winnerPattern = winConditionsValues.filter((ele) => allEqual(ele));
 
     const winnerCoordinates = winConditions[winnerIndex];
 
     return {
       exists: winnerExists,
       coordinates: winnerCoordinates, 
-      pattern: winnerPattern};
-
-
+      pattern: winnerPattern
+    };
 
   }
   // interface to interact with the board
