@@ -9,12 +9,17 @@ function Gameboard() {
   // For this 2d array, row 0 will represent the top row and
   // column 0 will represent the left-most column.
   // This nested-loop technique is a simple and common way to create a 2d array.
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < columns; j++) {
-      board[i].push(Cell());
+  const newBoard = () => {
+    board.length = 0;
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j < columns; j++) {
+        board[i].push(Cell());
+      }
     }
   }
+  newBoard();
+
 
   // getGameboard, return the array to work with in dom
   const getGameboard = () => board;
@@ -35,12 +40,12 @@ function Gameboard() {
 
   //displayGameboard, to visualize the board in console
   const displayGameboard = () => {
-    const boardWithValues = board.map( 
-      (row) => row.map( 
-        (col) => col.getValue() 
+    const boardWithValues = board.map(
+      (row) => row.map(
+        (col) => col.getValue()
       )
     )
-    boardWithValues.forEach(element => {console.log(element)});
+    boardWithValues.forEach(element => { console.log(element) });
   };
 
   // checkWinner, determines if the current board has a winner
@@ -51,18 +56,18 @@ function Gameboard() {
 
       // coordinates are in format of [row, column]
       // 3 across columns
-      [[0,0], [1, 0], [2, 0]],
-      [[0,1], [1, 1], [2, 1]],
-      [[0,2], [1, 2], [2, 2]],
+      [[0, 0], [1, 0], [2, 0]],
+      [[0, 1], [1, 1], [2, 1]],
+      [[0, 2], [1, 2], [2, 2]],
 
       // 3 across rows
-      [[0,0], [0, 1], [0, 2]],
-      [[1,0], [1, 1], [1, 2]],
-      [[2,0], [2, 1], [2, 2]],
+      [[0, 0], [0, 1], [0, 2]],
+      [[1, 0], [1, 1], [1, 2]],
+      [[2, 0], [2, 1], [2, 2]],
 
       // 3 across diag
-      [[0,0], [1, 1], [2, 2]],
-      [[0,2], [1, 1], [0, 2]]
+      [[0, 0], [1, 1], [2, 2]],
+      [[0, 2], [1, 1], [0, 2]]
     ];
 
     // iterate across each winning condition coordinates
@@ -81,7 +86,7 @@ function Gameboard() {
         );
       }
       winConditionsValues.push(array);
-    } 
+    }
 
     // now check if the values in each winCondition are all the same
 
@@ -91,7 +96,7 @@ function Gameboard() {
       return array.every((x, i, a) => x === a[0] && a[0] != '')
     }
     // const winners = winConditionsValues.map((cond) => allEqual(cond));
-    const winnerExists = winConditionsValues.some( (ele) => allEqual(ele));
+    const winnerExists = winConditionsValues.some((ele) => allEqual(ele));
     const winnerIndex = winConditionsValues.findIndex((ele) => allEqual(ele));
     const winnerPattern = winConditionsValues.filter((ele) => allEqual(ele));
 
@@ -99,17 +104,19 @@ function Gameboard() {
 
     return {
       exists: winnerExists,
-      coordinates: winnerCoordinates, 
+      coordinates: winnerCoordinates,
       pattern: winnerPattern
     };
 
   }
+
   // interface to interact with the board
   return {
     getGameboard,
     markCell,
     displayGameboard,
-    checkWinner
+    checkWinner,
+    reset: newBoard
   };
 }
 
@@ -155,7 +162,7 @@ function GameController() {
       name,
       marker
     }
-  } 
+  }
 
   const player1 = player('User', 'X');
   const player2 = player('Computer', 'O');
@@ -166,9 +173,9 @@ function GameController() {
 
   function switchActivePlayer() {
     if (activePlayer == player1) {
-      activePlayer=player2;
+      activePlayer = player2;
     } else {
-      activePlayer=player1;
+      activePlayer = player1;
     }
   }
 
@@ -177,22 +184,31 @@ function GameController() {
   }
 
   function playRound(row, col) {
-    // we assign output of markCell here, which is a boolean value that is
-    // true if the cell was marked (it was empty to start with), and 
-    // false if it was already marked
-    // if false, then the activePlayer will remain active
     console.log('Round: ' + roundCounter);
     console.log(
       'Active Player: ' + activePlayer.name + ', ' + activePlayer.marker
     )
 
-    let markedCell=board.markCell(row, col, activePlayer.marker);
+    // we assign output of markCell here, which is a boolean value that is
+    // true if the cell was marked (it was empty to start with), and 
+    // false if it was already marked
+    // if false, then the activePlayer will remain active
+    let markedCell = board.markCell(row, col, activePlayer.marker);
     board.displayGameboard();
 
-    let checkIfWinnerExists=board.checkWinner();
+    let checkIfWinnerExists = board.checkWinner();
+
     if (checkIfWinnerExists.exists) {
       console.log('Congratulations ' + activePlayer.name, '!')
       console.log('You Won!!!')
+      console.log('Starting a new game...')
+
+      board.reset();
+      board.displayGameboard();
+      console.log('Round: ' + roundCounter);
+      console.log(
+        'Active Player: ' + activePlayer.name + ', ' + activePlayer.marker
+      )
     } else if (markedCell) {
       switchActivePlayer();
       roundCounter++;
