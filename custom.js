@@ -124,10 +124,9 @@ function Gameboard() {
   };
 }
 
-// A cell contains a value which is either 0: no player has marked it yet, 1: 
-// it has an X, and 2: it has an O
+// A cell contains a value which is it's content
 function Cell(marker) {
-  let value = 0;
+  let value = '';
 
   // Accept a player's token to change the value of the cell
   const addMarker = (marker) => {
