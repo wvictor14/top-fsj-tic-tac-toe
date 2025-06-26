@@ -172,31 +172,50 @@ function GameController() {
     }
   }
 
+  function getActivePlayer() {
+    return activePlayer;
+  }
 
   function playRound(row, col) {
-    game.markCell(row, col, activePlayer.marker);
-    let checkIfWinnerExists=game.checkWinner();
+    // we assign output of markCell here, which is a boolean value that is
+    // true if the cell was marked (it was empty to start with), and 
+    // false if it was already marked
+    // if false, then the activePlayer will remain active
+    console.log('Round: ' + roundCounter);
+    console.log(
+      'Active Player: ' + activePlayer.name + ', ' + activePlayer.marker
+    )
+
+    let markedCell=board.markCell(row, col, activePlayer.marker);
+    board.displayGameboard();
+
+    let checkIfWinnerExists=board.checkWinner();
     if (checkIfWinnerExists.exists) {
-      game.displayGameboard();
       console.log('Congratulations ' + activePlayer.name, '!')
       console.log('You Won!!!')
-    } else {
+    } else if (markedCell) {
       switchActivePlayer();
+      roundCounter++;
     }
   }
 
   // play the game
 
   // initialize a game
-  game = Gameboard();
+  const board = Gameboard();
   let activePlayer = player1;
-  playRound(0, 0);
-  playRound(1, 1);
-  playRound(0, 2);
-  playRound(0, 1);
-  playRound(2, 0);
-  playRound(2, 1);
-
+  let roundCounter = 1;
+  return {
+    playRound,
+    getActivePlayer
+  }
 }
 
-GameController();
+let game = GameController();
+game.getActivePlayer();
+game.playRound(0, 1);
+game.playRound(0, 1); // try to fill a marked cell
+game.playRound(0, 2); // activePlayer should not change, should be still "O"
+game.playRound(1, 1);
+game.playRound(1, 2);
+game.playRound(2, 1);
