@@ -131,20 +131,15 @@ function Cell(marker) {
   };
 }
 
-game = Gameboard();
-game.markCell(0, 0, 'x');
-game.markCell(0, 1, 'o');
-game.markCell(1, 0, 'x');
-game.markCell(2, 1, 'o');
-game.markCell(2, 0, 'o');
-game.displayGameboard();
-game.checkWinner();
+// game = Gameboard();
+// game.markCell(0, 1, 'o');
+// game.markCell(1, 1, 'o');
+// game.markCell(2, 1, 'o');
+// game.displayGameboard();
+// console.log(game.checkWinner());
 
 // GameController controls the game
 function GameController() {
-
-  // initialize a game
-  game = Gameboard();
 
   // play a round
   // a round consists of each player marking a cell each
@@ -165,20 +160,43 @@ function GameController() {
   const player1 = player('User', 'X');
   const player2 = player('Computer', 'O');
 
-  function playRound(p1, p2) {
-    // player 1 places a marker down
-    game.markCell(0, 1, p1.marker);
+  // a round will consist of the active player placing a marker down
+  // then the activeplayer will switch, and they will place a marker down
+  // after each placement the game will check if a winner has occured
 
-    // player 2 places a marker down
-    game.markCell(0, 2, p2.marker);
-
-    // check for winner
-    game.displayGameboard();
-    game.checkWinner();
-
-    // if winner, end game
+  function switchActivePlayer() {
+    if (activePlayer == player1) {
+      activePlayer=player2;
+    } else {
+      activePlayer=player1;
+    }
   }
 
 
+  function playRound(row, col) {
+    game.markCell(row, col, activePlayer.marker);
+    let checkIfWinnerExists=game.checkWinner();
+    if (checkIfWinnerExists.exists) {
+      game.displayGameboard();
+      console.log('Congratulations ' + activePlayer.name, '!')
+      console.log('You Won!!!')
+    } else {
+      switchActivePlayer();
+    }
+  }
+
+  // play the game
+
+  // initialize a game
+  game = Gameboard();
+  let activePlayer = player1;
+  playRound(0, 0);
+  playRound(1, 1);
+  playRound(0, 2);
+  playRound(0, 1);
+  playRound(2, 0);
+  playRound(2, 1);
+
 }
 
+GameController();
