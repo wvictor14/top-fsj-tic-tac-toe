@@ -223,15 +223,76 @@ function GameController() {
   let roundCounter = 1;
   return {
     playRound,
-    getActivePlayer
+    getActivePlayer,
+    getGameboard: board.getGameboard
   }
 }
 
-let game = GameController();
-game.getActivePlayer();
-game.playRound(0, 1);
-game.playRound(0, 1); // try to fill a marked cell
-game.playRound(0, 2); // activePlayer should not change, should be still "O"
-game.playRound(1, 1);
-game.playRound(1, 2);
-game.playRound(2, 1);
+// let game = GameController();
+// game.getActivePlayer();
+// game.playRound(0, 1);
+// game.playRound(0, 1); // try to fill a marked cell
+// game.playRound(0, 2); // activePlayer should not change, should be still "O"
+// game.playRound(1, 1);
+// game.playRound(1, 2);
+// game.playRound(2, 1);
+
+
+// screenController
+// it will get the state of the game, and update the screen
+function screenController() {
+
+  // start a game
+  const game = GameController();
+  game.playRound(0, 1);
+  game.playRound(0, 1); // try to fill a marked cell
+  game.playRound(0, 2); // activePlayer should not change, should be still "O"
+  game.playRound(1, 1);
+
+  const updateScreen = () => {
+    const htmlBoard = document.querySelector('.board');
+    htmlBoard.innerHTML = '';
+    const board = game.getGameboard();
+
+    // here we create a bunch of divs mirroring the board
+    // each cell also has coordinates
+    // which will be used to update each cell
+    for (let i = 0; i < 3; i++) {
+      let rowDiv = document.createElement('div');
+      rowDiv.classList.add('row');
+      rowDiv.setAttribute('data-row', i);
+
+      for (let j = 0; j < 3; j++) {
+        let cell = document.createElement('button');
+        cell.classList.add('cell', 'btn');
+        cell.setAttribute('data-row', i);
+        cell.setAttribute('data-col', j);
+        
+        // add the value
+        cell.innerHTML = board[i][j].getValue();
+        
+        // add an eventListener
+        cell.addEventListener("click", mark);
+
+        rowDiv.appendChild(cell);
+      }
+      htmlBoard.appendChild(rowDiv);
+    }
+
+    // event handler for a click on a cell
+    // get the cell coordinates
+    // play a round 
+    // update screen
+    function mark(event) {
+      const row = event.target.getAttribute('data-row');
+      const col = event.target.getAttribute('data-col');
+
+      game.playRound(row, col);
+      updateScreen();
+    }
+  }
+
+  updateScreen();
+};
+
+screenController();
