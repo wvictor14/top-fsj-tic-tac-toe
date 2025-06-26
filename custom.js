@@ -21,7 +21,16 @@ function Gameboard() {
 
   //markCell, play a round by marking a cell in the gameboard
   const markCell = (row, column, player) => {
-    board[row][column].addMarker(player)
+
+    // do not overwrite cells with existing markers
+    if (board[row][column].getValue() == '') {
+      board[row][column].addMarker(player);
+      return true;
+    } else {
+      // if not an empty cell return false
+      console.log('This cell already has a marker in it!')
+      return false;
+    };
   }
 
   //displayGameboard, to visualize the board in console
