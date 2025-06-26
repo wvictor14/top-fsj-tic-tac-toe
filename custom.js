@@ -35,11 +35,14 @@ function Gameboard() {
 
   //displayGameboard, to visualize the board in console
   const displayGameboard = () => {
+    const boardWithValues = board.map( 
+      (row) => row.map( 
+        (col) => col.getValue() 
+      )
+    )
+    boardWithValues.forEach(element => {console.log(element)});
+  };
 
-    for (let i = 0; i < 3; i++) {
-      let row='';
-      for (let j = 0; j < 3; j++) {
-        row += board[i][j].getValue();
       }
       console.log(row);
     }
