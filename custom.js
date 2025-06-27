@@ -283,11 +283,13 @@ function screenController() {
 
   // start a game
   const game = GameController();
-  game.playRound(0, 0);
-  game.playRound(2, 2); // activePlayer should not change, should be still "O"
-  game.playRound(1, 1);
-  game.playRound(1, 0);
-  game.playRound(0, 2); // activePlayer should not change, should be still "O"
+  
+  // // for dev
+  // game.playRound(0, 0);
+  // game.playRound(2, 2); // activePlayer should not change, should be still "O"
+  // game.playRound(1, 1);
+  // game.playRound(1, 0);
+  // game.playRound(0, 2); // activePlayer should not change, should be still "O"
 
   // create players div at top of page
   const activePlayerRow = document.querySelector('.active-player-row');
