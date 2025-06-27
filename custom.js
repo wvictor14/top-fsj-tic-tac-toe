@@ -212,9 +212,25 @@ function GameController() {
       continueGame = false;
 
     } else if (markedCell) {
-      switchActivePlayer();
-      roundCounter++;
+      if (anyEmpty()) {
+        switchActivePlayer();
+        roundCounter++;
+      } else {
+        console.log('a Tie!');
+        continueGame = false;
+      }
     }
+  }
+
+  // check if game is tie
+  // returns true if any empty cells remain
+  function anyEmpty() {
+    let gameboard = board.getGameboard();
+    
+    // any row has a cell that is empty
+    let byRow = gameboard.map(ele => ele.map(cell => cell.getValue()).includes(''));
+    
+    return byRow.includes(true);
   }
 
   // reset
@@ -244,6 +260,7 @@ function GameController() {
       player1,
       player2,
       keepPlaying,
+      anyEmpty,
       newGame,
       getRound
     }
@@ -356,6 +373,8 @@ function screenController() {
       // display the winning pattern
       if (!game.keepPlaying()) {
 
+        if (game.checkWinner().exists) {
+          
         let winnerName = document.createElement('h1');
         winnerName.classList.add('winner-name');
         winnerName.innerHTML = game.getActivePlayer().name;
@@ -365,6 +384,12 @@ function screenController() {
 
         winnerHTML.append(winnerName);
         winnerHTML.append(congrats)
+        
+        } else {
+          let announcement = document.createElement('h1');
+          announcement.innerHTML = "It's a TIE!";
+          winnerHTML.append(announcement);
+        }
       }
     }
 
