@@ -163,8 +163,8 @@ function GameController() {
     }
   }
 
-  const player1 = player('User', 'X');
-  const player2 = player('Computer', 'O');
+  const player1 = player('Pikachu', 'X');
+  const player2 = player('Dragonite', 'O');
 
   // a round will consist of the active player placing a marker down
   // then the activeplayer will switch, and they will place a marker down
@@ -216,7 +216,13 @@ function GameController() {
     }
   }
 
-  // play the game
+  // reset
+  function newGame() {
+    board.reset();
+    roundCounter = 1;
+    activePlayer = player1;
+    continueGame = true;
+  }
 
   // initialize a game
   const board = Gameboard();
@@ -235,6 +241,7 @@ function GameController() {
       playRound,
       getActivePlayer,
       keepPlaying,
+      newGame,
       getRound
     }
   )
@@ -325,11 +332,15 @@ function screenController() {
     }
     
     const winnerHTML = document.querySelector('.winner');
-  
 
     // new game button
-    const btnNewGame = document.querySelector('new-game');
-    btnNewGame
+    const btnNewGame = document.querySelector('.new-game button');
+    btnNewGame.addEventListener('click', function(event) {
+      game.newGame(); 
+      updateScreen();
+      winnerHTML.innerHTML='';
+    });
+
   }
 
   updateScreen();
