@@ -182,6 +182,9 @@ function GameController() {
   function getActivePlayer() {
     return activePlayer;
   }
+  function getRound() {
+    return roundCounter;
+  }
 
   function playRound(row, col) {
     console.log('Round: ' + roundCounter);
@@ -194,21 +197,20 @@ function GameController() {
     // false if it was already marked
     // if false, then the activePlayer will remain active
     let markedCell = board.markCell(row, col, activePlayer.marker);
-    board.displayGameboard();
-
     let checkIfWinnerExists = board.checkWinner();
-
+    
     if (checkIfWinnerExists.exists) {
       console.log('Congratulations ' + activePlayer.name, '!')
       console.log('You Won!!!')
-      console.log('Starting a new game...')
-
-      board.reset();
+      
       board.displayGameboard();
-      console.log('Round: ' + roundCounter);
-      console.log(
-        'Active Player: ' + activePlayer.name + ', ' + activePlayer.marker
-      )
+      console.log(checkIfWinnerExists.coordinates);
+
+      // end game
+      // start new game
+      console.log('Start a new game? ...')
+      continueGame=false;
+
     } else if (markedCell) {
       switchActivePlayer();
       roundCounter++;
@@ -221,11 +223,22 @@ function GameController() {
   const board = Gameboard();
   let activePlayer = player1;
   let roundCounter = 1;
-  return {
-    playRound,
-    getActivePlayer,
-    getGameboard: board.getGameboard
-  }
+  let continueGame = true;
+
+  const keepPlaying = () => continueGame;
+  
+  // we want to give access to all board functions from gamecontroller
+  // so that screen can interact with the board
+  return Object.assign(
+    {},
+    board,
+    {
+      playRound,
+      getActivePlayer,
+      keepPlaying,
+      getRound
+    }
+  )
 }
 
 // let game = GameController();
