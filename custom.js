@@ -257,15 +257,20 @@ function screenController() {
 
   // start a game
   const game = GameController();
-  game.playRound(0, 1);
-  game.playRound(0, 1); // try to fill a marked cell
-  game.playRound(0, 2); // activePlayer should not change, should be still "O"
+  game.playRound(0, 0);
+  game.playRound(2, 2); // activePlayer should not change, should be still "O"
   game.playRound(1, 1);
+  game.playRound(1, 0);
+  game.playRound(0, 2); // activePlayer should not change, should be still "O"
 
   const updateScreen = () => {
     const htmlBoard = document.querySelector('.board');
     htmlBoard.innerHTML = '';
+    
+    const htmlRound = document.querySelector('.round');
     const board = game.getGameboard();
+    
+    htmlRound.innerHTML = 'Round: ' + game.getRound();
 
     // here we create a bunch of divs mirroring the board
     // each cell also has coordinates
