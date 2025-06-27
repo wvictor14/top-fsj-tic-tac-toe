@@ -165,7 +165,7 @@ function GameController() {
   }
 
   const player1 = player('Pikachu', 'X', 'player1');
-  const player2 = player('Dragonite', 'O', 'player2');
+  const player2 = player('Bulbasaur', 'O', 'player2');
 
   // a round will consist of the active player placing a marker down
   // then the activeplayer will switch, and they will place a marker down
@@ -198,18 +198,18 @@ function GameController() {
     // if false, then the activePlayer will remain active
     let markedCell = board.markCell(row, col, activePlayer.marker);
     let checkIfWinnerExists = board.checkWinner();
-    
+
     if (checkIfWinnerExists.exists) {
       console.log('Congratulations ' + activePlayer.name, '!')
       console.log('You Won!!!')
-      
+
       board.displayGameboard();
       console.log(checkIfWinnerExists.coordinates);
 
       // end game
       // start new game
       console.log('Start a new game? ...')
-      continueGame=false;
+      continueGame = false;
 
     } else if (markedCell) {
       switchActivePlayer();
@@ -232,7 +232,7 @@ function GameController() {
   let continueGame = true;
 
   const keepPlaying = () => continueGame;
-  
+
   // we want to give access to all board functions from gamecontroller
   // so that screen can interact with the board
   return Object.assign(
@@ -272,37 +272,35 @@ function screenController() {
   game.playRound(1, 0);
   game.playRound(0, 2); // activePlayer should not change, should be still "O"
 
-      // create players div at top of page
-    const activePlayerRow = document.querySelector('.active-player-row');
-    player1HTML = document.createElement('div');
-    player1HTML.classList.add('player1');
-    player1HTML.innerHTML=game.player1.name;
-    player2HTML = document.createElement('div');
-    player2HTML.classList.add('player2');
-    player2HTML.innerHTML=game.player2.name;
-    activePlayerRow.append(player1HTML);
-    activePlayerRow.append(player2HTML);
+  // create players div at top of page
+  const activePlayerRow = document.querySelector('.active-player-row');
+  player1HTML = document.createElement('div');
+  player1HTML.classList.add('player1');
+  player1HTML.innerHTML = game.player1.name;
+  player2HTML = document.createElement('div');
+  player2HTML.classList.add('player2');
+  player2HTML.innerHTML = game.player2.name;
+  activePlayerRow.append(player1HTML);
+  activePlayerRow.append(player2HTML);
 
   const updateScreen = () => {
     const htmlBoard = document.querySelector('.board');
     htmlBoard.innerHTML = '';
-    
+
     const htmlRound = document.querySelector('.round');
     const board = game.getGameboard();
-    
+
     htmlRound.innerHTML = 'Round: ' + game.getRound();
 
     // change class of active-player
-    console.log(game.getActivePlayer().player);
-    if (game.getActivePlayer().player=='player1') {
+    let activePlayer = game.getActivePlayer().player;
+    if (activePlayer == 'player1') {
       player2HTML.classList.remove('active-player')
       player1HTML.classList.add('active-player')
     } else {
       player1HTML.classList.remove('active-player')
       player2HTML.classList.add('active-player')
     }
-
-    
 
     // here we create a bunch of divs mirroring the board
     // each cell also has coordinates
@@ -317,18 +315,31 @@ function screenController() {
         cell.classList.add('cell', 'btn');
         cell.setAttribute('data-row', i);
         cell.setAttribute('data-col', j);
-        
+
         // add the value
-        cell.innerHTML = board[i][j].getValue();
-        
+        let cellValue = board[i][j].getValue();
+        cell.innerHTML = cellValue;
+
         // add an eventListener
-        cell.addEventListener("click", mark);
+        if (cellValue == '') {
+          cell.classList.add('not-marked-yet');
+
+          // add class active-player to activate proper color on hover
+          cell.classList.add(activePlayer);
+          cell.classList.add('active-player');
+          cell.addEventListener("click", mark);
+
+          (activePlayer == 'player1') ? cell.classList.add('player1') : cell.classList.add('player2');
+
+        } else {
+          cell.classList.add('marked');
+        }
 
         rowDiv.appendChild(cell);
       }
       htmlBoard.appendChild(rowDiv);
     }
-
+    console.log(board[1][1].getValue());
     // event handler for a click on a cell
     // get the cell coordinates
     // play a round 
@@ -340,33 +351,33 @@ function screenController() {
       game.playRound(row, col);
       updateScreen();
       console.log(game.keepPlaying());
-      
+
       // when game is over announce the winner
       // display the winning pattern
-      if (!game.keepPlaying()){
+      if (!game.keepPlaying()) {
 
         let winnerName = document.createElement('h1');
         winnerName.classList.add('winner-name');
-        winnerName.innerHTML=game.getActivePlayer().name;
+        winnerName.innerHTML = game.getActivePlayer().name;
 
         let congrats = document.createElement('p');
-        congrats.innerHTML='Congratulations! <br>You Win!!';
+        congrats.innerHTML = 'Congratulations! <br>You Win!!';
 
         winnerHTML.append(winnerName);
         winnerHTML.append(congrats)
       }
     }
-    
+
 
     // winner announced 
     const winnerHTML = document.querySelector('.winner');
 
     // new game button
     const btnNewGame = document.querySelector('.new-game button');
-    btnNewGame.addEventListener('click', function(event) {
-      game.newGame(); 
+    btnNewGame.addEventListener('click', function (event) {
+      game.newGame();
       updateScreen();
-      winnerHTML.innerHTML='';
+      winnerHTML.innerHTML = '';
     });
 
   }

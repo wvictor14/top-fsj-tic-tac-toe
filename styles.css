@@ -6,6 +6,10 @@
   font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
+:root {
+  --player1Color: #d6d909;
+  --player2Color: #8dea88;
+}
 .round {
   text-align: center;
 }
@@ -20,9 +24,10 @@
 }
 
 .active-player-row > * {
-  border: 1px solid black;
+  background-color: rgb(208, 207, 207);
+  border: 0px solid black;
   border-radius: 0.9rem;
-  padding: 10px;
+  padding: 15px;
   font-size: 1rem;
 }
 
@@ -33,9 +38,22 @@
   justify-self: start;
 }
 
-.active-player {
-  font-size: 2rem;
+/* active player row always colored*/
+.active-player-row .player1.active-player  {
+  background-color: var(--player1Color);
 }
+.active-player-row .player2.active-player {
+  background-color: var(--player2Color);
+}
+
+/* cells active-player colored only on hover */
+.player1.active-player:hover {
+  background-color: var(--player1Color);
+}
+.player2.active-player:hover {
+  background-color: var(--player2Color);
+}
+
 
 .board {
   display: grid;
@@ -56,14 +74,13 @@
   border-radius: 0.9rem;
   font-size:4em;
 }
-.btn {
+
+.not-marked-yet:hover {
   cursor:pointer;
-}
-.btn:hover {
-  background-color:#00ad34;
   transition: 0.7s;
   color: white;
 }
+
 .new-game {
   margin-top: 10px;
   display: flex;
