@@ -99,7 +99,6 @@ function Gameboard() {
     const winnerExists = winConditionsValues.some((ele) => allEqual(ele));
     const winnerIndex = winConditionsValues.findIndex((ele) => allEqual(ele));
     const winnerPattern = winConditionsValues.filter((ele) => allEqual(ele));
-
     const winnerCoordinates = winConditions[winnerIndex];
 
     return {
@@ -307,7 +306,30 @@ function screenController() {
 
       game.playRound(row, col);
       updateScreen();
+      console.log(game.keepPlaying());
+      
+      // when game is over announce the winner
+      // display the winning pattern
+      if (!game.keepPlaying()){
+
+        let winnerName = document.createElement('h1');
+        winnerName.classList.add('winner-name');
+        winnerName.innerHTML=game.getActivePlayer().name;
+
+        let congrats = document.createElement('p');
+        congrats.innerHTML='Congratulations! <br>You Win!!';
+
+        winnerHTML.append(winnerName);
+        winnerHTML.append(congrats)
+      }
     }
+    
+    const winnerHTML = document.querySelector('.winner');
+  
+
+    // new game button
+    const btnNewGame = document.querySelector('new-game');
+    btnNewGame
   }
 
   updateScreen();
