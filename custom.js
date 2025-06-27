@@ -226,10 +226,10 @@ function GameController() {
   // returns true if any empty cells remain
   function anyEmpty() {
     let gameboard = board.getGameboard();
-    
+
     // any row has a cell that is empty
     let byRow = gameboard.map(ele => ele.map(cell => cell.getValue()).includes(''));
-    
+
     return byRow.includes(true);
   }
 
@@ -374,17 +374,32 @@ function screenController() {
       if (!game.keepPlaying()) {
 
         if (game.checkWinner().exists) {
-          
-        let winnerName = document.createElement('h1');
-        winnerName.classList.add('winner-name');
-        winnerName.innerHTML = game.getActivePlayer().name;
 
-        let congrats = document.createElement('p');
-        congrats.innerHTML = 'Congratulations! <br>You Win!!';
+          // highlight the winning cells
+          let winnerCoordinates = game.checkWinner().coordinates;
+          for (let i = 0; i < 3; i++) {
+            let cell = winnerCoordinates[i];
+            
+            const cellHTML = document.querySelector(
+              `button[data-row="${cell[0]}"][data-col="${cell[1]}"]`
+            );
+            let activePlayer = game.getActivePlayer().player;
+            cellHTML.classList.add(activePlayer)
+            cellHTML.classList.add('winning-cell')
 
-        winnerHTML.append(winnerName);
-        winnerHTML.append(congrats)
-        
+          }
+
+          // write the message
+          let winnerName = document.createElement('h1');
+          winnerName.classList.add('winner-name');
+          winnerName.innerHTML = game.getActivePlayer().name;
+
+          let congrats = document.createElement('p');
+          congrats.innerHTML = 'Congratulations! <br>You Win!!';
+
+          winnerHTML.append(winnerName);
+          winnerHTML.append(congrats)
+
         } else {
           let announcement = document.createElement('h1');
           announcement.innerHTML = "It's a TIE!";

@@ -39,10 +39,12 @@
 }
 
 /* active player row always colored*/
-.active-player-row .player1.active-player  {
+.active-player-row .player1.active-player,
+.cell.player1.winning-cell {
   background-color: var(--player1Color);
 }
-.active-player-row .player2.active-player {
+.active-player-row .player2.active-player,
+.cell.player2.winning-cell {
   background-color: var(--player2Color);
 }
 
