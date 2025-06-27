@@ -7,11 +7,37 @@
 }
 
 :root {
-  --player1Color: #d6d909;
-  --player2Color: #8dea88;
+  --player1Color: #d1d355;
+  --player2Color: #86aa84;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: #d0dbe1;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+    --grad: red, blue;
+  padding: 2.5rem;
+  background-image: linear-gradient(to bottom left, #e0e4e5, #f2f6f9);
+  border-radius: 2rem;
+  gap: 1.5rem;
+  font-family: system-ui, sans-serif;
+  color: #444447;
+  box-shadow: 
+    inset -2px 2px hsl(0 0 100% / 1),
+    -20px 20px 40px hsl(0 0 0 / .25) ;
 }
 .round {
+  margin-top: 10px;
   text-align: center;
+  font-size: 2rem;
 }
 
 .active-player-row {
@@ -28,7 +54,12 @@
   border: 0px solid black;
   border-radius: 0.9rem;
   padding: 15px;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  margin: 15px;
+  
+  box-shadow: 
+    inset -1px 1px hsl(0, 16%, 94%),
+    -20px 20px 40px hsl(0 0 0 / .25) ;
 }
 
 .player1 {
@@ -68,13 +99,19 @@
 }
 
 .cell {
-  height: 100px;
-  width: 100px;
-  margin: 2px;
-  background-color: rgb(216, 212, 186);
+  height: 110px;
+  width: 110px;
+  margin: 4px;
+  background-color: rgb(224, 223, 216);
   border: 0px solid black;
   border-radius: 0.9rem;
   font-size:4em;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 500;
+  color: rgb(68, 51, 51);
+  box-shadow: 
+    inset -1px 1px hsl(0, 16%, 94%),
+    -2px 2px 4px hsl(0 0 0 / .25) ;
 }
 
 .not-marked-yet:hover {
@@ -84,7 +121,7 @@
 }
 
 .new-game {
-  margin-top: 10px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,22 +134,24 @@
   border-radius: 12px;
   padding: 12px;
   cursor: pointer;
-  font-size: 1.5em;
+  font-size: 2em;
 }
 .new-game button:hover {
   background-color: #04AA6D; /* Green */
   color: black;
-  font-size: 2em;
+  font-size: 2.2em;
 }
 .winner {
-  margin: 20px;
   text-align: center;
+  height: 200px;
 }
 .winner .winner-name {
   font-size: 4em;
-  margin: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .winner p {
-  font-size: 3em;
-  margin: 0px;
+  font-size: 2.5em;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
