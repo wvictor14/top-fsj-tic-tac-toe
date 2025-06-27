@@ -156,15 +156,16 @@ function GameController() {
 
 
   // we need to instantiate two players
-  function player(name, marker) {
+  function player(name, marker, player) {
     return {
       name,
-      marker
+      marker,
+      player
     }
   }
 
-  const player1 = player('Pikachu', 'X');
-  const player2 = player('Dragonite', 'O');
+  const player1 = player('Pikachu', 'X', 'player1');
+  const player2 = player('Dragonite', 'O', 'player2');
 
   // a round will consist of the active player placing a marker down
   // then the activeplayer will switch, and they will place a marker down
@@ -240,6 +241,8 @@ function GameController() {
     {
       playRound,
       getActivePlayer,
+      player1,
+      player2,
       keepPlaying,
       newGame,
       getRound
@@ -269,6 +272,17 @@ function screenController() {
   game.playRound(1, 0);
   game.playRound(0, 2); // activePlayer should not change, should be still "O"
 
+      // create players div at top of page
+    const activePlayerRow = document.querySelector('.active-player-row');
+    player1HTML = document.createElement('div');
+    player1HTML.classList.add('player1');
+    player1HTML.innerHTML=game.player1.name;
+    player2HTML = document.createElement('div');
+    player2HTML.classList.add('player2');
+    player2HTML.innerHTML=game.player2.name;
+    activePlayerRow.append(player1HTML);
+    activePlayerRow.append(player2HTML);
+
   const updateScreen = () => {
     const htmlBoard = document.querySelector('.board');
     htmlBoard.innerHTML = '';
@@ -277,6 +291,18 @@ function screenController() {
     const board = game.getGameboard();
     
     htmlRound.innerHTML = 'Round: ' + game.getRound();
+
+    // change class of active-player
+    console.log(game.getActivePlayer().player);
+    if (game.getActivePlayer().player=='player1') {
+      player2HTML.classList.remove('active-player')
+      player1HTML.classList.add('active-player')
+    } else {
+      player1HTML.classList.remove('active-player')
+      player2HTML.classList.add('active-player')
+    }
+
+    
 
     // here we create a bunch of divs mirroring the board
     // each cell also has coordinates
@@ -331,6 +357,8 @@ function screenController() {
       }
     }
     
+
+    // winner announced 
     const winnerHTML = document.querySelector('.winner');
 
     // new game button

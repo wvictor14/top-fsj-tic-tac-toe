@@ -9,6 +9,34 @@
 .round {
   text-align: center;
 }
+
+.active-player-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  /*justify-content: center; */
+  gap: 40px;
+  margin: 10px;
+}
+
+.active-player-row > * {
+  border: 1px solid black;
+  border-radius: 0.9rem;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.player1 {
+  justify-self: end;
+}
+.player2 {
+  justify-self: start;
+}
+
+.active-player {
+  font-size: 2rem;
+}
+
 .board {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
